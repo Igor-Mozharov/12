@@ -237,12 +237,17 @@ USER_INPUT = {
 
 def main():
     load_contacts_book = addressbook.load_from_file()
+    if load_contacts_book:
+        for key, value in load_contacts_book.items():
+            addressbook.data[key] = value
     while True:
         user_input = input('Enter something  ')
         user_input = user_input.lower()
         if user_input == '.':
+            addressbook.save_to_file()
             break
         if user_input in ('good bye', 'close', 'exit'):
+            addressbook.save_to_file()
             print('Good bye!')
             break
         if user_input in USER_INPUT:
@@ -251,10 +256,10 @@ def main():
             USER_INPUT[user_input.split()[0]](user_input)
 
 
-# main()
+main()
 
 # new = Record('Igor')
 # new.add_phone('0507777777')
 # addressbook.add_record(new)
-addressbook.load_from_file()
-print(addressbook.data)
+# addressbook.load_from_file()
+# print(addressbook.data)

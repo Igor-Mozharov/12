@@ -24,6 +24,21 @@ class AddressBook(UserDict):
         except FileNotFoundError:
             return None
 
+    def search_name(self, symbols):
+        result = {}
+        for name, data in self.data.items():
+            if symbols in name.lower():
+                result[name] = data.phones
+        return result
+
+    def search_phone(self, symbols):
+        result = {}
+        for name, data in self.data.items():
+            for rec in data.phones:
+                if symbols in rec.value:
+                    result[name] = data.phones
+        return result
+
 
 class Record:
     def __init__(self, new_name, birthday=None):
@@ -222,6 +237,16 @@ def show_birthday(text_input: str):
     birthding.days_to_birthday()
 
 
+@input_error
+def find(text_input: str):
+    result_from_name = addressbook.search_name(text_input.split()[1])
+    result_fron_phone = addressbook.search_phone(text_input.split()[1])
+    if not result_from_name:
+        print(result_fron_phone)
+    else:
+        print(result_from_name)
+
+
 USER_INPUT = {
     'hello': hello,
     'add': add,
@@ -231,7 +256,8 @@ USER_INPUT = {
     'delete': delete_contact,
     'remove': remove_phone,
     'set_birthday': set_birthday,
-    'birthday': show_birthday
+    'birthday': show_birthday,
+    'find': find
 }
 
 
